@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-time Google Sheet Data</title>
+    <script>
+        const apiKey = 'YOUR_API_KEY';  // Replace with your API key
+        const sheetId = 'YOUR_SHEET_ID';  // Replace with your Google Sheet ID
+        const range = 'Sheet1!A1';  // Replace with your desired range
+
+        async function getSheetData() {
+            const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?key=${apiKey}`;
+            const response = await fetch(url);
+            const data = await response.json();
+            const cellValue = data.values[0][0];
+            document.getElementById('cellValue').innerText = cellValue;
+        }
+
+        // Update the cell value every 5 seconds
+        setInterval(getSheetData, 5000);
+
+        // Load data initially when page loads
+        window.onload = getSheetData;
+    </script>
+</head>
+<body>
+    <h1>Real-time Cell Data</h1>
+    <div>
+        <strong>Cell Value:</strong> <span id="cellValue">Loading...</span>
+    </div>
+</body>
+</html>
